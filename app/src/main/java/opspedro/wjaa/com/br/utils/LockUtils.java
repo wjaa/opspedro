@@ -1,9 +1,11 @@
 package opspedro.wjaa.com.br.utils;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Build;
 import android.telephony.TelephonyManager;
 import android.view.View;
+import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.FrameLayout;
@@ -89,7 +91,7 @@ public final class LockUtils {
             }
 
             this.windowsManager.addView(this.frameLayout, this.layoutParams);
-
+            //Window
         }
         m210a(0);
         this.f267e = true;
