@@ -14,6 +14,7 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.PowerManager;
 import android.telephony.TelephonyManager;
+import android.util.Log;
 
 import com.google.android.gms.wallet.WalletConstants;
 
@@ -36,6 +37,7 @@ public class LockScreenService extends Service{
 	private LockScreenHelper helper1;
 	private boolean endCommand;
 	private boolean apiLesser18;
+	private boolean firstStart = true;
 
 
 	public class LockScreenServiceBinder extends Binder {
@@ -60,6 +62,7 @@ public class LockScreenService extends Service{
 
 		public final void onReceive(Context context, Intent intent) {
 			String action = intent.getAction();
+			Log.i("LockScreenService", "onReceive = " + action);
 			if (!"android.intent.action.SCREEN_ON".equals(action)) {
 				if ("android.intent.action.PHONE_STATE".equals(action)) {
 					if (this.myService.telephonyManager.getCallState() == 0) {
@@ -72,9 +75,11 @@ public class LockScreenService extends Service{
 						this.myService.telefoneInativo = true;
 					}
 				} else if ("android.intent.action.SCREEN_OFF".equals(action)) {
+					firstStart = false;
 					this.myService.helper1.startLockStreen(this.myService.telephonyManager, true, context, this.myService.lockUtils, this.myService.apiGreether22);
-				} else {
-					"android.intent.action.USER_PRESENT".equals(action);
+				} else if  ("android.intent.action.USER_PRESENT".equals(action) && firstStart) {
+					firstStart = false;
+					this.myService.helper1.startLockStreen(this.myService.telephonyManager, true, context, this.myService.lockUtils, this.myService.apiGreether22);
 				}
 			}
 		}
